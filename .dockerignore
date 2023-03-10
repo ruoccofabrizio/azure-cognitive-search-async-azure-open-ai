@@ -1,0 +1,5 @@
+local.settings.json
+ngrok.exe
+.venv
+.vscode
+tester.py
