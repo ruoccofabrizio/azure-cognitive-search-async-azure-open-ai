@@ -141,7 +141,7 @@ def transform_value(value):
             "metadata_storage_path": data['metadata_storage_path'],
             "text": data['text']
         } 
-        send_to_queue(json.dumps(output), queue_name="openai_queue")
+        send_to_queue(output, queue_name="openai_queue")
 
 
     except Exception as e:
