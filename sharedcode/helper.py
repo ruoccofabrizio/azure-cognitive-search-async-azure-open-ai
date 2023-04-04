@@ -78,7 +78,7 @@ def push_to_ACS(data):
         return 200
 
     for key in OPENAI_PROMPT_KEYS.replace(' ','').split(','):
-        key, search_type = key.split(':')
+        key, search_type, _ = key.split(':')
         if search_type == 'Edm.String':
             body_value[key] = str(data['output'][key])
         elif search_type == 'Edm.Int32':
