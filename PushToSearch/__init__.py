@@ -13,7 +13,7 @@ def main(msg: func.ServiceBusMessage):
 
     if result_code == 200:
         logging.info('Push to Azure Cognitive Search succeeded.')
-    elif result_code == 404:
+    elif result_code in (404, 207):
         helper.send_to_queue(data, datetime.datetime.utcnow() + datetime.timedelta(seconds=10))
 
 
