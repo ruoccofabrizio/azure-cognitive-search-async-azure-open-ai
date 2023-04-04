@@ -101,7 +101,7 @@ Field names need to be updated accordingly to your Azure OpenAI prompt keys.
 ## Sample Skillset Definition
 
 In order to use this skill in a cognitive search pipeline, you need to add a skill definition to your skillset.
-Here's a sample skill definition for this example (inputs and outputs should be updated to reflect your particular scenario and skillset environment):
+
 
 ```json
 {
@@ -125,12 +125,8 @@ Here's a sample skill definition for this example (inputs and outputs should be 
     ],
     "outputs": [
         {
-            "name": "summary",
-            "targetName": "summary"
-        },
-        {
-            "name": "customer_satisfied",
-            "targetName": "customer_satisfied"
+            "name": "status",
+            "targetName": "status"
         }
     ]
 }
@@ -159,8 +155,7 @@ Here's a sample skill definition for this example (inputs and outputs should be 
         {
             "recordId": "record1",
             "data": {
-                "summay": "The customer asked information about his bill. The agent was able to provide them and handle the situation.",
-                "customer_satisfied": "True"
+                "status": "Processing document."
             },
             "errors": null,
             "warnings": null
