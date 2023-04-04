@@ -9,7 +9,7 @@ def main(msg: func.ServiceBusMessage):
     # helper.initialize()
 
     # Get the message body
-    body = json.loads(json.loads(msg.get_body().decode('utf-8')))
+    body = json.loads(msg.get_body().decode('utf-8'))
 
     data = {
         'metadata_storage_path': body['metadata_storage_path'],
