@@ -1,0 +1,23 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "YOUR_AZURE_BLOB_STORAGE_CONNECTION_STRING",
+    "AzureServiceBusConnectionString": "YOUR_AZURE_SERVICE_BUS_CONNECTION_STRING",
+    "FUNCTIONS_WORKER_RUNTIME": "python",
+    "OPENAI_API_BASE": "https://{YOUR_AZURE_OPENAI_RESOURCE_NAME}.openai.azure.com/",
+    "OPENAI_API_KEY": "YOUR_AZURE_OPENAI_RESOURCE_KEY",
+    "OPENAI_DEPLOYMENT_NAME" : "gpt-35-turbo",
+    "OPENAI_MODEL_TYPE" : "chat",
+    "OPENAI_TEMPERATURE": "0.7",
+    "OPENAI_MAX_TOKENS" : "800",
+    "OPENAI_TOP_P" : "0.95",
+    "OPENAI_FREQUENCY_PENALTY" : "0.0",
+    "OPENAI_PRESENCE_PENALTY": "0.0",
+    "OPENAI_PROMPT" : "You are a JSON formatter for extracting information out of a single chat conversation.\n\nSummarize the conversation, key: summary\nIs the customer satisfied with the agent interaction (Yes or No), key: satisfied\n\nAnswer in JSON machine-readable format, using the keys from above.\nPretty print the JSON and make sure that it is properly closed at the end and do not generate any other content.",
+    "OPENAI_PROMPT_KEYS": "summary:Edm.String:False,satisfiedEdm.String:True",
+    "AZURE_SEARCH_SERVICE_NAME": "YOUR_AZURE_SEARCH_SERVICE_NAME",
+    "AZURE_SEARCH_INDEX_NAME": "YOUR_AZURE_SEARCH_INDEX_NAME",
+    "AZURE_SEARCH_API_KEY": "YOUR_AZURE_SEARCH_API_KEY",
+    "AZURE_SEARCH_API_VERSION": "2020-06-30-Preview"
+  }
+}

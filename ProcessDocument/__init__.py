@@ -16,7 +16,7 @@ def main(msg: func.ServiceBusMessage):
         'output' : []
     }
     
-    result = helper.get_openai_completion(text = body['text'])
+    result = helper.get_openai_response(text = body['text'])
     logging.info(result)
 
     try:

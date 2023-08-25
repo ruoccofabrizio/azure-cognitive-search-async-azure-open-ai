@@ -16,15 +16,16 @@ logging.basicConfig(
 # OpenAI Parameters
 openai.api_type = "azure"
 openai.api_base = os.getenv('OPENAI_API_BASE')
-openai.api_version = "2022-12-01"
+openai.api_version = "2023-07-01-preview"
 openai.api_key = os.getenv("OPENAI_API_KEY")
 MODEL = os.getenv('OPENAI_DEPLOYMENT_NAME', "text-davinci-003")
-TEMPERATURE = float(os.getenv('OPENAI_TEMPERATURE', 0.1))
+TEMPERATURE = float(os.getenv('OPENAI_TEMPERATURE', 0.7))
 MAX_TOKENS = int(os.getenv('OPENAI_MAX_TOKENS', 800))
-TOP_P = float(os.getenv('OPENAI_TOP_P', 1.0))
-FREQUENCY_PENALTY = float(os.getenv('OPENAI_FREQUENCY_PENALTY', 0.8))
+TOP_P = float(os.getenv('OPENAI_TOP_P', 0.95))
+FREQUENCY_PENALTY = float(os.getenv('OPENAI_FREQUENCY_PENALTY', 0.0))
 PRESENCE_PENALTY = float(os.getenv('OPENAI_PRESENCE_PENALTY', 0.0))
-PROMPT = os.getenv('OPENAI_PROMPT', 'Execute these tasks:\n-  Summarize the conversation, key: summary\nAnswer in JSON machine-readable format, using the keys from above.\nFormat the ouput as JSON object called "results". Pretty print the JSON and make sure that is properly closed at the end.\n').replace(r'\n', '\n')
+PROMPT = os.getenv('OPENAI_PROMPT', "You are a JSON formatter for extracting information out of a single chat conversation.\n\nSummarize the conversation, key: summary\nIs the customer satisfied with the agent interaction (Yes or No), key: satisfied\n\nAnswer in JSON machine-readable format, using the keys from above.\nPretty print the JSON and make sure that it is properly closed at the end and do not generate any other content.")
+MODEL_TYPE = os.getenv('OPENAI_MODEL_TYPE', 'chat').lower()
 
 # Azure Cognitive Search Parameters
 OPENAI_PROMPT_KEYS = os.getenv('OPENAI_PROMPT_KEYS', 'summary')
@@ -32,6 +33,12 @@ search_service = os.getenv('AZURE_SEARCH_SERVICE_NAME')
 index_name = os.getenv('AZURE_SEARCH_INDEX_NAME')
 api_key = os.getenv('AZURE_SEARCH_API_KEY')
 api_version = os.getenv('AZURE_SEARCH_API_VERSION')
+
+def get_openai_response(text, prompt= ''):
+    if MODEL_TYPE == 'chat':
+        return get_openai_chat_completion(text, prompt)
+    else:
+        return get_openai_completion(text, prompt)
 
 @retry(wait=wait_random_exponential(min=1, max=20), stop=stop_after_attempt(6))
 def get_openai_completion(text, prompt = ''):
@@ -47,6 +54,23 @@ def get_openai_completion(text, prompt = ''):
             )
     return response['choices'][0]['text']
 
+@retry(wait=wait_random_exponential(min=1, max=20), stop=stop_after_attempt(6))
+def get_openai_chat_completion(text, prompt = ''):
+    prompt = PROMPT if prompt == '' else prompt
+    response = openai.ChatCompletion.create(
+            engine="gpt-35-turbo",
+            messages = [
+                {"role":"system","content": prompt},
+                {"role":"user","content":text}],
+            temperature=0.7,
+            max_tokens=800,
+            top_p=0.95,
+            frequency_penalty=0,
+            presence_penalty=0,
+            stop=None
+        )
+    return response['choices'][0]['message']['content']
+    
 def send_to_queue(data, queue_name="openai_results_queue", scheduled_enqueue_time_utc=datetime.datetime.utcnow()):
     servicebus_client = ServiceBusClient.from_connection_string(conn_str=os.getenv('AzureServiceBusConnectionString'), logging_enable=True)
     with servicebus_client:
