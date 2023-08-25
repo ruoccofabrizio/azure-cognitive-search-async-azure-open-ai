@@ -25,7 +25,7 @@ TOP_P = float(os.getenv('OPENAI_TOP_P', 0.95))
 FREQUENCY_PENALTY = float(os.getenv('OPENAI_FREQUENCY_PENALTY', 0.0))
 PRESENCE_PENALTY = float(os.getenv('OPENAI_PRESENCE_PENALTY', 0.0))
 PROMPT = os.getenv('OPENAI_PROMPT', "You are a JSON formatter for extracting information out of a single chat conversation.\n\nSummarize the conversation, key: summary\nIs the customer satisfied with the agent interaction (Yes or No), key: satisfied\n\nAnswer in JSON machine-readable format, using the keys from above.\nPretty print the JSON and make sure that it is properly closed at the end and do not generate any other content.")
-MODEL_TYPE = os.getenv('OPENAI_MODEL_TYPE', 'chat').lower()
+MODEL_TYPE = os.getenv('OPENAI_MODEL_TYPE', 'text').lower()
 
 # Azure Cognitive Search Parameters
 OPENAI_PROMPT_KEYS = os.getenv('OPENAI_PROMPT_KEYS', 'summary')
