@@ -1,6 +1,7 @@
 import logging, json
 import azure.functions as func
 from sharedcode import helper
+import traceback
 
 # Get logging options:
 logger = logging.getLogger(__name__)
@@ -20,9 +21,11 @@ def main(msg: func.ServiceBusMessage):
     logging.info(result)
 
     try:
-        data['output'] = json.loads(result)['results']
+        data['output'] = json.loads(result)
+        if data['output'].get('results', None) is not None:
+            data['output'] = data['output']['results']
     except Exception as e:
-        logging.info(e)
+        logging.error(traceback.format_exc())
     
     helper.send_to_queue(data)
     logging.info(data['output'])
